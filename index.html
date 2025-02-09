@@ -75,22 +75,23 @@
                         <div class="d-flex">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle me-4" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Trigonometry
-                                </button>
+                                    aria-expanded="false">Trigonometry</button>
                                 <div class="dropdown-menu" style="width: 300px;">
                                     <div class="row row-cols-4 pb-2">
                                         <div class="col col-3">
-                                            <button class="btn btn-light px-0 w-100"><p>2<sup>nd</sup></p></button>
+                                            <button class="btn btn-light px-0 w-100 drop_main_nd"><p>2<sup>nd</sup></p></button>
                                         </div>
                                         <div class="col col-3">
-                                            <button class="btn btn-light px-0 w-100">sin</button>
+                                            <button class="btn btn-light px-0 w-100 drop_2nd">sin</button>
+                                            <button class="btn btn-light px-0 w-100 drop_nd">asin</button>
                                         </div>
                                         <div class="col col-3">
-                                            <button class="btn btn-light px-0 w-100">cos</button>
+                                            <button class="btn btn-light px-0 w-100 drop_2nd">cos</button>
+                                            <button class="btn btn-light px-0 w-100 drop_nd">cos</button>
                                         </div>
                                         <div class="col col-3">
-                                            <button class="btn btn-light px-0 w-100">tan</button>
+                                            <button class="btn btn-light px-0 w-100 drop_2nd">tan</button>
+                                            <button class="btn btn-light px-0 w-100 drop_nd">atan</button>
                                         </div>
                                     </div>
                                     <div class="row row-cols-4 pb-2">
@@ -120,25 +121,25 @@
                                 <div class="dropdown-menu" style="width: 300px;">
                                     <div class="row row-cols-3 pb-2">
                                         <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">button</button>
+                                            <button class="btn btn-light px-0 w-100">| x |</button>
                                         </div>
                                         <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">button</button>
+                                            <button class="btn btn-light px-0 w-100">⌈x⌉</button>
                                         </div>
                                         <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">button</button>
+                                            <button class="btn btn-light px-0 w-100">⌊x⌋</button>
                                         </div>
 
                                     </div>
                                     <div class="row row-cols-3 pb-2">
                                         <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">button</button>
+                                            <button class="btn btn-light px-0 w-100">rand</button>
                                         </div>
                                         <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">button</button>
+                                            <button class="btn btn-light px-0 w-100">→dms</button>
                                         </div>
                                         <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">button</button>
+                                            <button class="btn btn-light px-0 w-100">→deg</button>
                                         </div>
 
                                     </div>
@@ -151,13 +152,13 @@
                         <div class="">
                             <div class="row row-cols-5 g-1 text-center">
                                 <div>
-                                    <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">2<sup>nd</sup></p>
+                                    <button class="btn shadow-sm w-100 rounded nd_main">
+                                        2nd</p>
                                     </button>
                                 </div>
                                 <div>
                                     <button class="btn shadow-sm w-100 rounded">
-                                        <p class=" m-0 p-0">&#960;</p>
+                                        <p class=" m-0 p-0">𝜫</p>
                                     </button>
                                 </div>
                                 <div>
@@ -167,16 +168,17 @@
                                     <button class="btn shadow-sm w-100 rounded">CE</button>
                                 </div>
                                 <div>
-                                    <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">&#9003;</p>
+                                    <button class="btn shadow-sm w-100 rounded" value="backspace">
+                                        BackSpace
                                     </button>
                                 </div>
                             </div>
                             <div class="row row-cols-5  g-1 text-center">
                                 <div class="">
-                                    <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">x<sup>2</sup></p>
+                                    <button class="btn shadow-sm w-100 rounded nd">
+                                        x²
                                     </button>
+                                    <button class="btn shadow-sm w-100 rounded nd_change">x3</button>
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">1/x</button>
@@ -193,7 +195,8 @@
                             </div>
                             <div class="row row-cols-5 g-1 text-center">
                                 <div class="">
-                                    <button class="btn shadow-sm w-100 rounded"><sup>2</sup>√x</button>
+                                    <button class="btn shadow-sm w-100 rounded nd">2√x</button>
+                                    <button class="btn shadow-sm w-100 rounded nd_change">x3</button>
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">(</button>
@@ -206,15 +209,16 @@
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">&#247;</p>
+                                        <p class="m-0 p-0">/</p>
                                     </button>
                                 </div>
                             </div>
                             <div class="row row-cols-5 g-1 text-center">
                                 <div class="">
-                                    <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">x<sup>y</sup></p>
+                                    <button class="btn shadow-sm w-100 rounded nd">
+                                        xʸ
                                     </button>
+                                    <button class="btn shadow-sm w-100 rounded nd_change">x3</button>
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">7</button>
@@ -227,15 +231,16 @@
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">&#215;</p>
+                                        <p class="m-0 p-0">*</p>
                                     </button>
                                 </div>
                             </div>
                             <div class="row row-cols-5 g-1 text-center">
                                 <div class="">
-                                    <button class="btn shadow-sm w-100 rounded">
-                                        <p class="m-0 p-0">10<sup>x</sup></p>
+                                    <button class="btn shadow-sm w-100 rounded nd" >
+                                        10^x 
                                     </button>
+                                    <button class="btn shadow-sm w-100 rounded nd_change">x3</button>
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">4</button>
@@ -250,9 +255,30 @@
                                     <button class="btn shadow-sm w-100 rounded">-</button>
                                 </div>
                             </div>
+                            <div class="row row-cols-5  g-1 text-center">
+                                <div class="">
+                                    <button class="btn shadow-sm w-100 rounded nd">
+                                        log
+                                    </button>
+                                    <button class="btn shadow-sm w-100 rounded nd_change">x3</button>
+                                </div>
+                                <div class="">
+                                    <button class="btn shadow-sm w-100 rounded ">1</button>
+                                </div>
+                                <div class="">
+                                    <button class="btn shadow-sm w-100 rounded">2</button>
+                                </div>
+                                <div class="">
+                                    <button class="btn shadow-sm w-100 rounded">3</button>
+                                </div>
+                                <div class="">
+                                    <button class="btn shadow-sm w-100 rounded">+</button>
+                                </div>
+                            </div>
                             <div class="row row-cols-5 g-1 text-center ">
                                 <div class="">
-                                    <button class="btn shadow-sm w-100 rounded">log</button>
+                                    <button class="btn shadow-sm w-100 rounded nd">ln</button>
+                                    <button class="btn shadow-sm w-100 rounded nd_change">x3</button>
                                 </div>
                                 <div class="">
                                     <button class="btn shadow-sm w-100 rounded">+/-</button>

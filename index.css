@@ -140,3 +140,17 @@ input[type="text"]:focus {
   background-color: var(--display-bg);
   color: var(--font);
 }
+
+.nd_change {
+  display: none;
+}
+.nd {
+  display: block;
+}
+
+.drop_2nd {
+  display: block;
+}
+.drop_nd {
+  display: none;
+}
