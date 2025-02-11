@@ -61,16 +61,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.getElementsByClassName("btn");
 
     let redian = document.getElementById('redian');
-    let redFlage = 0;  // Initially, set the flag to 0 (radians)
-
+    let redFlage = 0;  
     // Add event listener to toggle between radians and degrees
     redian.addEventListener('click', function () {
         if (redFlage == 0) {
             redFlage = 1;
-            redian.innerHTML = "Deg"; // Display "Deg" when flag is 1
+            redian.innerHTML = "Deg";
         } else {
             redFlage = 0;
-            redian.innerHTML = "Red"; // Display "Red" when flag is 0
+            redian.innerHTML = "Red";
         }
     });
 
@@ -110,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue += Math.PI;
                 display.value = currentValue;
             } else if (value == "exp") {
-                currentValue += "e+";
+                currentValue += ".e+";
                 display.value = currentValue;
             } else if (value == "e") {
                 currentValue += Math.E;
@@ -125,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue = evaluate.sqrt(currentValue);
                 display.value = currentValue;
             } else if (value == "xʸ") {
-                currentValue += "^"; // Append "^" for exponentiation
+                currentValue += "^"; 
                 display.value = currentValue;
             } else if (value == "mod") {
                 currentValue += "%";
@@ -175,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (value == "rand") {
                     currentValue = Math.random();
                     display.value = currentValue;
-                }
+                } 
             } else if (value == "Red" || value == "Deg") {
 
             }
@@ -196,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         currentValue = Math.tan(currentValue);
                         break;
                     case 'sec':
-                        // Avoid division by zero (if cos(x) = 0, sec(x) will be infinity)
+                        
                         if (Math.cos(currentValue) !== 0) {
                             currentValue = 1 / Math.cos(currentValue);
                         } else {
@@ -204,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case 'csc':
-                        // Avoid division by zero (if sin(x) = 0, csc(x) will be infinity)
+                       
                         if (Math.sin(currentValue) !== 0) {
                             currentValue = 1 / Math.sin(currentValue);
                         } else {
@@ -212,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case 'cot':
-                        // Avoid division by zero (if tan(x) = 0, cot(x) will be infinity)
+                       
                         if (Math.tan(currentValue) !== 0) {
                             currentValue = 1 / Math.tan(currentValue);
                         } else {
@@ -231,20 +230,19 @@ document.addEventListener("DOMContentLoaded", function () {
             
                 switch (value) {
                     case 'asin':
-                        // asin(x) returns the angle whose sine is x, result is in radians
+                       
                         currentValue = Math.asin(currentValue);
                         break;
                     case 'acos':
-                        // acos(x) returns the angle whose cosine is x, result is in radians
+                      
                         currentValue = Math.acos(currentValue);
                         break;
                     case 'atan':
-                        // atan(x) returns the angle whose tangent is x, result is in radians
+                      
                         currentValue = Math.atan(currentValue);
                         break;
                     case 'asec':
-                        // asec(x) returns the angle whose secant is x
-                        // sec(x) = 1 / cos(x), so asec(x) = 1 / cos(x)
+                       
                         if (Math.abs(currentValue) >= 1) {  // secant must be >= 1 or <= -1
                             currentValue = Math.acos(1 / currentValue);
                         } else {
@@ -252,8 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case 'acsc':
-                        // acsc(x) returns the angle whose cosecant is x
-                        // csc(x) = 1 / sin(x), so acsc(x) = 1 / sin(x)
+                        
                         if (Math.abs(currentValue) >= 1) {  // cosecant must be >= 1 or <= -1
                             currentValue = Math.asin(1 / currentValue);
                         } else {
@@ -261,8 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case 'acot':
-                        // acot(x) returns the angle whose cotangent is x
-                        // cot(x) = 1 / tan(x), so acot(x) = 1 / tan(x)
+                      
                         if (currentValue !== 0) {  // cotangent cannot be zero
                             currentValue = Math.atan(1 / currentValue);
                         } else {
@@ -286,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         currentValue = Math.tanh(currentValue);
                         break;
                     case 'sech':
-                        // Avoid division by zero (if cosh(x) = 0, sech(x) will be infinity)
+                       
                         if (Math.cosh(currentValue) !== 0) {
                             currentValue = 1 / Math.cosh(currentValue);
                         } else {
@@ -294,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case 'csch':
-                        // Avoid division by zero (if sinh(x) = 0, csch(x) will be infinity)
+                       
                         if (Math.sinh(currentValue) !== 0) {
                             currentValue = 1 / Math.sinh(currentValue);
                         } else {
@@ -302,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case 'coth':
-                        // Avoid division by zero (if tanh(x) = 0, coth(x) will be infinity)
+                        
                         if (Math.tanh(currentValue) !== 0) {
                             currentValue = 1 / Math.tanh(currentValue);
                         } else {
@@ -415,7 +411,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         break;
                 }
 
-                // Update the display
+                
+                display.value = currentValue;
+            }
+            else if(currentValue == "Infinity") {
+                currentValue = evaluate.canNotDivide(currentValue);
                 display.value = currentValue;
             }
 
@@ -423,14 +423,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 // convert to float
                 let num = parseFloat(currentValue);
                 
-                // Check if the value is a valid number
+               
                 if (!isNaN(num)) {
-                    // Convert to exponential form with a certain number of decimals
-                    // You can adjust the number of decimals as needed (e.g., 3 decimals here)
+                    
                     currentValue = num.toExponential(3);  
                     display.value = currentValue;
                 } else {
-                    // Handle invalid input
+                   
                     currentValue = "Error";
                     display.value = currentValue;
                 }
@@ -471,30 +470,35 @@ function changeTheme() {
 
 
 class Calculate {
-
-    constructor(currentValue, display) {
-        this.currentValue = currentValue;
-        this.display = display;
+    constructor() {
+        this.currentValue = '';
+        this.display = document.getElementById("spanOutput");
     }
 
     evaluate(currentValue) {
         try {
             currentValue = currentValue.replace("log", "Math.log");
-            currentValue = currentValue.replace("π", Math.PI); // Make sure π is replaced by Math.PI
-            currentValue = currentValue.replace("e", Math.E); // Ensure e is replaced by Math.E
-    
-            // Make sure that the expression is valid before evaluation
+            currentValue = currentValue.replace("π", Math.PI.toString());
+            
             const result = eval(currentValue);
             if (isNaN(result) || result === undefined) {
                 return "Error";
             }
-            return result;
+            return result.toString();
         } catch (err) {
             console.error("Evaluation error: ", err);
-            return "Error"; // Return "Error" in case of any issue in evaluation
+            return "Error"; 
         }
     }
-    
+
+    canNotDivide(currentValue) {
+        let i = currentValue.includes('/0');
+        if (i) {
+            return 'Infinity';
+        } else {
+            return '';
+        }
+    }
 
     factorial(n) {
         if (n < 0) return "Error";
@@ -502,12 +506,12 @@ class Calculate {
         for (let i = 1; i <= n; i++) {
             result *= i;
         }
-        return result;
+        return result.toString();
     }
 
     sqrt(currentValue) {
         let num = parseFloat(currentValue);
-        return num >= 0 ? Math.sqrt(num) : "Invalid Input";
+        return num >= 0 ? Math.sqrt(num).toString() : "Invalid Input";
     }
 
     power(currentValue) {
@@ -516,22 +520,26 @@ class Calculate {
             let base = parseFloat(values[0]);
             let exponent = parseFloat(values[1]);
             if (!isNaN(base) && !isNaN(exponent)) {
-                return Math.pow(base, exponent);
+                return Math.pow(base, exponent).toString();
             }
         }
         return "Invalid Format";
     }
 
-
     append(value) {
         if (value === "π") {
-            this.expression += Math.PI;
-        } else if (this.screen.innerText === "0" && value !== ".") {
-            this.expression = value;
+            this.currentValue += Math.PI.toString();
+        } else if (this.display.value === "0" && value !== ".") {
+            this.currentValue = value;
         } else {
-            this.expression += value;
+            this.currentValue += value;
         }
         this.updateScreen();
     }
 
+    updateScreen() {
+        this.display.value = this.currentValue;
+    }
+
+    
 }
