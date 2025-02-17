@@ -100,7 +100,13 @@ document.addEventListener("DOMContentLoaded", function () {
           } // Normal evaluation
         }
         display.value = currentValue;
-      } else if (value == "BackSpace") {
+      } else if (value === "->dms") {
+        // Convert currentValue from degrees to DMS
+        currentValue = degToDMS(parseFloat(currentValue));
+        display.value = currentValue;
+      } 
+      
+      else if (value == "BackSpace") {
         currentValue = currentValue.slice(0, -1);
         display.value = currentValue;
       } else if (value == "n!") {
@@ -485,6 +491,29 @@ function changeTheme() {
     console.error(`Error in storing theme: ${err}`);
   }
 }
+
+
+// Convert degrees to DMS (Degrees, Minutes, Seconds)
+function degToDMS(deg) {
+    let d = Math.floor(deg);
+    let m = Math.floor((deg - d) * 60);
+    let s = ((deg - d - m / 60) * 3600).toFixed(2);
+    return `${d}° ${m}' ${s}"`;
+  }
+  
+  // Convert DMS (Degrees, Minutes, Seconds) to degrees
+  function DMSToDeg(dms) {
+    const regex = /^(\d+)° (\d+)' (\d+\.\d+)"$/;
+    const matches = dms.match(regex);
+    if (matches) {
+      let deg = parseInt(matches[1]);
+      let min = parseInt(matches[2]);
+      let sec = parseFloat(matches[3]);
+      return deg + (min / 60) + (sec / 3600);
+    }
+    return "Invalid Format";  // Handle invalid DMS format
+  }
+
 
 // class Calculate {
 //     constructor() {
