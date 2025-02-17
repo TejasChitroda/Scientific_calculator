@@ -75,6 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const value = button.innerText.trim();
       const val = button.value;
 
+      if (currentValue[0] == "0") {
+        currentValue = currentValue.replace(/^0+/, '');
+        display.value = currentValue;
+      }
+
       if (value == "CE") {
         currentValue = "";
         display.value = currentValue;
