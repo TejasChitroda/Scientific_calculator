@@ -1,3 +1,5 @@
+import  Calculate  from "./calculate.js";
+
 document.addEventListener("DOMContentLoaded", function () {
     let main = document.getElementById("main");
     let theme = localStorage.getItem("theme");
@@ -60,6 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const display = document.getElementById("spanOutput");
     const buttons = document.getElementsByClassName("btn");
 
+    let feFlag = 0;
+
     let redian = document.getElementById('redian');
     let redFlage = 0;  
     // Add event listener to toggle between radians and degrees
@@ -93,10 +97,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
             else if (value == "=") {
+                
                 if (currentValue.includes("^")) {
                     currentValue = evaluate.power(currentValue); // Compute power
                 } else {
-                    currentValue = evaluate.evaluate(currentValue); // Normal evaluation
+                    currentValue = evaluate.evaluate(currentValue);
+                    if (feFlag == 1) {
+                        currentValue =  Number(currentValue).toExponential().toString();
+                        feFlag = 0;
+                     } // Normal evaluation
                 }
                 display.value = currentValue;
             } else if (value == "BackSpace") {
@@ -136,8 +145,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue = Math.pow(parseFloat(currentValue), -1);
                 display.value = currentValue;
             } else if (value == "10^x") {
-                currentValue += "10^";
-                display.value = currentValue;
+                
+                currentValue = Math.pow(10 , currentValue);
+                display.value = currentValue
+               
             }
             else if (value == "log") {
                 currentValue = Math.log10(parseFloat(currentValue));
@@ -422,6 +433,7 @@ document.addEventListener("DOMContentLoaded", function () {
             else if (value == "F-E") {
                 // convert to float
                 let num = parseFloat(currentValue);
+                feFlag = 1;
                 
                
                 if (!isNaN(num)) {
@@ -469,77 +481,93 @@ function changeTheme() {
 
 
 
-class Calculate {
-    constructor() {
-        this.currentValue = '';
-        this.display = document.getElementById("spanOutput");
-    }
+// class Calculate {
+//     constructor() {
+//         this.currentValue = '';
+//         this.display = document.getElementById("spanOutput");
+//     }
 
-    evaluate(currentValue) {
-        try {
-            currentValue = currentValue.replace("log", "Math.log");
-            currentValue = currentValue.replace("π", Math.PI.toString());
+//     // evaluate(currentValue) {
+//     //     try {
+//     //         currentValue = currentValue.replace("log", "Math.log");
+//     //         currentValue = currentValue.replace("π", Math.PI.toString());
             
-            const result = eval(currentValue);
-            if (isNaN(result) || result === undefined) {
-                return "Error";
-            }
-            return result.toString();
-        } catch (err) {
-            console.error("Evaluation error: ", err);
-            return "Error"; 
-        }
-    }
+//     //         const result = eval(currentValue);
+//     //         if (isNaN(result) || result === undefined) {
+//     //             return "Error";
+//     //         }
+//     //         return result.toString();
+//     //     } catch (err) {
+//     //         console.error("Evaluation error: ", err);
+//     //         return "Error"; 
+//     //     }
+//     // }
 
-    canNotDivide(currentValue) {
-        let i = currentValue.includes('/0');
-        if (i) {
-            return 'Infinity';
-        } else {
-            return '';
-        }
-    }
+//     canNotDivide(currentValue) {
+//         let i = currentValue.includes('/0');
+//         if (i) {
+//             return 'Infinity';
+//         } else {
+//             return '';
+//         }
+//     }
 
-    factorial(n) {
-        if (n < 0) return "Error";
-        let result = 1;
-        for (let i = 1; i <= n; i++) {
-            result *= i;
-        }
-        return result.toString();
-    }
+//     factorial(n) {
+//         if (n < 0) return "Error";
+//         let result = 1;
+//         for (let i = 1; i <= n; i++) {
+//             result *= i;
+//         }
+//         return result.toString();
+//     }
 
-    sqrt(currentValue) {
-        let num = parseFloat(currentValue);
-        return num >= 0 ? Math.sqrt(num).toString() : "Invalid Input";
-    }
+//     sqrt(currentValue) {
+//         let num = parseFloat(currentValue);
+//         return num >= 0 ? Math.sqrt(num).toString() : "Invalid Input";
+//     }
 
-    power(currentValue) {
-        let values = currentValue.split("^");
-        if (values.length === 2) {
-            let base = parseFloat(values[0]);
-            let exponent = parseFloat(values[1]);
-            if (!isNaN(base) && !isNaN(exponent)) {
-                return Math.pow(base, exponent).toString();
-            }
-        }
-        return "Invalid Format";
-    }
+//     power(currentValue) {
+//         let values = currentValue.split("^");
+//         if (values.length === 2) {
+//             let base = parseFloat(values[0]);
+//             let exponent = parseFloat(values[1]);
+//             if (!isNaN(base) && !isNaN(exponent)) {
+//                 return Math.pow(base, exponent).toString();
+//             }
+//         }
+//         return "Invalid Format";
+//     }
 
-    append(value) {
-        if (value === "π") {
-            this.currentValue += Math.PI.toString();
-        } else if (this.display.value === "0" && value !== ".") {
-            this.currentValue = value;
-        } else {
-            this.currentValue += value;
-        }
-        this.updateScreen();
-    }
+//     append(value) {
+//         if (value === "π") {
+//             this.currentValue += Math.PI.toString();
+//         } else if (this.display.value === "0" && value !== ".") {
+//             this.currentValue = value;
+//         } else {
+//             this.currentValue += value;
+//         }
+//         this.updateScreen();
+//     }
 
-    updateScreen() {
-        this.display.value = this.currentValue;
-    }
+//     updateScreen() {
+//         this.display.value = this.currentValue;
+//     }
 
     
-}
+// }
+
+// Calculate.prototype.evaluate = function(currentValue) {
+//     try {
+//         currentValue = currentValue.replace("log", "Math.log");
+//         currentValue = currentValue.replace("π", Math.PI.toString());
+        
+//         const result = eval(currentValue);
+//         if (isNaN(result) || result === undefined) {
+//             return "Error";
+//         }
+//         return result.toString();
+//     } catch (err) {
+//         console.error("Evaluation error: ", err);
+//         return "Error"; 
+//     }
+// }
