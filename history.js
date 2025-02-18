@@ -1,37 +1,39 @@
-let historyPage = document.addEventListener('DOMContentLoaded' , function () {
-    getAllDataFromSessionStorage();
-})
-
-let i = 0;
+document.addEventListener("DOMContentLoaded", function () {
+  getAllDataFromSessionStorage();
+});
 
 export function getAllDataFromSessionStorage() {
-    let history = document.getElementById('history-div')
-    let historySm = document.getElementById('history-div-sm')
-    i++;
+  let history = document.getElementById("history-div");
+  let historySm = document.getElementById("history-div-sm");
+  let historyDelete = document.getElementById("delete");
+  let content = "";
+  let contentSm = "";
 
-    // console.log(sessionStorage.length , i);
-   
-    // for (let i = sessionStorage.length - 2; i < sessionStorage.length -1; i++) {
-      let key = sessionStorage.key(i-1);
-      let value = sessionStorage.getItem(key);
+  for (let i = 0; i < sessionStorage.length; i++) {
+    let key = sessionStorage.key(i);
+    let value = sessionStorage.getItem(key);
 
-      if (key == "IsThisFirstTime_Log_From_LiveServer") {
+    if (
+      key === "IsThisFirstTime_Log_From_LiveServer" ||
+      key === "Error" ||
+      value === "Error"
+    )
+      continue;
 
-      }
-      else {
-      history.innerHTML += `<p class="history-div" ><span>${key}</span>
-      <span> = ${value}</span>
-      </p>
-      `
+    content += `<p class="history-div"><span>${key}</span>
+                  <span> = ${value}</span></p>`;
 
-      historySm.innerHTML += `<p class="history-div" ><span>${key}</span>
-      <span> = ${value}</span>
-      </p>
-      `
-      }
-      
-    // }
-    
+    contentSm += `<p class="history-div"><span>${key}</span>
+                    <span> = ${value}</span></p>`;
   }
 
-export default historyPage;
+  history.innerHTML = content;
+  historySm.innerHTML = contentSm;
+
+  historyDelete.addEventListener("click", function () {
+    sessionStorage.clear();
+    history.innerHTML = "";
+  });
+}
+
+export default getAllDataFromSessionStorage;

@@ -11,12 +11,8 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet" />
     <link rel="stylesheet" href="index.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-
     <title>Scientific Calculator</title>
-
     <script type="module" src="index.js"></script>
-
     <style>
         .no-cursor {
             caret-color: transparent;
@@ -26,32 +22,23 @@
 </head>
 
 <body id="main">
-
-
-
     <div class="container-fluid">
         <div class="row d-flex justify-content-end ">
             <div class="col-12 col-lg-9  first_part "> 
                 <div class="d-flex flex-column justify-content-between "> 
-                    <!-- nav bar -->
-
                     <nav class="navbar d-flex">
                         <div>
                             <a class="navbar-brand" href="#">Calculator</a>
                         </div>
                         <div>
-                            <button class="btn"><i class="fa fa-circle-half-stroke fa-lg" aria-hidden="true"
-                                    onclick="changeTheme()"></i></button>
+                            <button class="btn"><i class="fa fa-circle-half-stroke fa-lg" id="theme" aria-hidden="true"
+                                    ></i></button>
                             <button class="btn d-block d-lg-none"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasHistory" aria-controls="offcanvasHistory"><i class="fa fa-clock fa-lg " aria-hidden="true"
                                     ></i></button>
-                            
-                        </div>
-                        
+                        </div>                        
                     </nav>
 
                     <div class="d-flex flex-column ">
-                        <!-- input text  -->
-
                         <div id="spanDiv">
                             <input id="spanOutput" type="text" placeholder="0"  class="form-control no-cursor text-end"
                                 style="font-size: 40px; font-weight: bold" />
@@ -71,9 +58,7 @@
                         </div>
 
                         <hr>
-
                         <!-- Dropdown for Trigo -->
-
                         <div class="d-flex">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle me-4 " type="button" data-bs-toggle="dropdown"
@@ -114,22 +99,17 @@
                                     aria-expanded="false">Trigonometry(Inverse)</button>
                                 <div class="dropdown-menu bg-secondary" style="width: 300px;">
                                     <div class="row row-cols-3 pb-2">
-                                        
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">asin</button>
-                                            
                                         </div>
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">acos</button>
-                                           
                                         </div>
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">atan</button>
-                                            
                                         </div>
                                     </div>
                                     <div class="row row-cols-3 pb-2">
-                                        
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100">asec</button>
                                         </div>
@@ -142,29 +122,22 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle me-4 " type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">Hyp</button>
                                 <div class="dropdown-menu bg-secondary" style="width: 300px;">
                                     <div class="row row-cols-3 pb-2">
-                                        
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">sinh</button>
-                                            
                                         </div>
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">cosh</button>
-                                           
                                         </div>
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">tanh</button>
-                                            
                                         </div>
                                     </div>
                                     <div class="row row-cols-3 pb-2">
-                                        
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100">sech</button>
                                         </div>
@@ -178,24 +151,19 @@
                                 </div>
                             </div>
 
-
                            <div class="dropdown">
                                 <button class="btn dropdown-toggle me-4 " type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">Hyp(Inverse)</button>
                                 <div class="dropdown-menu bg-secondary" style="width: 300px;">
                                     <div class="row row-cols-3 pb-2">
-                                        
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">arsinh</button>
-                                            
                                         </div>
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">arcosh</button>
-                                           
                                         </div>
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100 drop_2nd">artanh</button>
-                                            
                                         </div>
                                     </div>
                                     <div class="row row-cols-3 pb-2">
@@ -209,6 +177,7 @@
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100">arcoth</button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +198,6 @@
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100">⌊x⌋</button>
                                         </div>
-
                                     </div>
                                     <div class="row row-cols-3 pb-2">
                                         <div class="col col-4">
@@ -238,17 +206,11 @@
                                         <div class="col col-4">
                                             <button class="btn btn-light px-0 w-100">->dms</button>
                                         </div>
-                                        <!-- <div class="col col-4">
-                                            <button class="btn btn-light px-0 w-100">->deg</button>
-                                        </div> -->
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- main button section -->
-
                         <div class="">
                             <div class="row row-cols-5 g-1 text-center">
                                 <div>
@@ -402,18 +364,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Histroy</a>
                     </li>
-                   
-                   
-                    
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" id="delete">Delete</a>
+                    </li>
                 </ul>
-                <div id="history-div">
-                    
+                <div id="history-div"> 
                 </div>
             </div>
-
-
-           
-
             <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasHistory" aria-labelledby="offcanvasBottomLabel">
                 <div class="offcanvas-header">
                   <h5 class="offcanvas-title" id="offcanvasBottomLabel">History</h5>

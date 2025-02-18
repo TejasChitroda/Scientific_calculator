@@ -1,5 +1,5 @@
 import Calculate from "./calculate.js";
-import historyPage , {getAllDataFromSessionStorage} from "./history.js";
+import historyPage, { getAllDataFromSessionStorage } from "./history.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   let main = document.getElementById("main");
@@ -7,8 +7,27 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log(`theme class is : ${theme}`);
   main.className = theme ? theme : "theme_light";
 
+  document.getElementById("theme").addEventListener("click", function () {
+    let main = document.getElementById("main");
+    let themeClass;
+    if (main.classList.contains("theme_light")) {
+      main.classList.replace("theme_light", "theme_dark"); // Dark mode
+      themeClass = "theme_dark";
+    } else {
+      main.classList.replace("theme_dark", "theme_light"); // Light mode
+      themeClass = "theme_light";
+    }
+
+    try {
+      localStorage.setItem("theme", themeClass);
+      console.log("theme class is : ", localStorage.getItem("theme"));
+    } catch (err) {
+      console.error(`Error in storing theme: ${err}`);
+    }
+  });
+
   const evaluate = new Calculate();
-  historyPage;
+  historyPage();
 
   document.addEventListener("keydown", (event) => {
     const key = event.key;
@@ -27,9 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // this is for toggle logic
-
-  let toggleButtons = document.querySelector(".nd_main"); // All toggle buttons
+  let toggleButtons = document.querySelector(".nd_main"); // toggle buttons
   toggleButtons.addEventListener("click", function () {
     let toggle = document.querySelectorAll(".nd_change");
 
@@ -62,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let redian = document.getElementById("redian");
   let redFlage = 0;
-  // Add event listener to toggle between radians and degrees
   redian.addEventListener("click", function () {
     if (redFlage == 0) {
       redFlage = 1;
@@ -79,10 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const button = buttons[i];
     button.addEventListener("click", function () {
       const value = button.innerText.trim();
-      const val = button.value;
-
       if (currentValue[0] == "0") {
-        currentValue = currentValue.replace(/^0+/, '');
+        currentValue = currentValue.replace(/^0+/, "");
         display.value = currentValue;
       }
 
@@ -97,50 +111,49 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else if (value == "=") {
         keyHistory = currentValue;
-        if (ythroot){
-            ythroot = 0;
-            let exp = currentValue;
-            let splitExp = exp.split("√");
-            currentValue = Math.pow(splitExp[1] , 1/splitExp[0]);
-            display.value = currentValue;
+        if (ythroot) {
+          ythroot = 0;
+          let exp = currentValue;
+          let splitExp = exp.split("√");
+          currentValue = Math.pow(splitExp[1], 1 / splitExp[0]);
+          display.value = currentValue;
         }
-        if(base) {
-            base = 0;
-            ythroot = 0;
-            let exp = currentValue;
-            let splitExp = exp.split("logBase");
-            currentValue = Math.log(splitExp[0])/Math.log(splitExp[1]);
-            display.value = currentValue;
+        if (base) {
+          base = 0;
+          ythroot = 0;
+          let exp = currentValue;
+          let splitExp = exp.split("logBase");
+          currentValue = Math.log(splitExp[0]) / Math.log(splitExp[1]);
+          display.value = currentValue;
         }
         if (currentValue.includes("^")) {
-          currentValue = evaluate.power(currentValue); // Compute power
+          currentValue = evaluate.power(currentValue);
         } else {
           currentValue = evaluate.evaluate(currentValue);
           if (feFlag == 1) {
             currentValue = Number(currentValue).toExponential().toString();
             feFlag = 0;
-          } // Normal evaluation
+          }
         }
         display.value = currentValue;
         valueHistory = currentValue;
-        sessionStorage.setItem(keyHistory , valueHistory);
+        sessionStorage.setItem(keyHistory, valueHistory);
         getAllDataFromSessionStorage();
       } else if (value === "->dms") {
-        // Convert currentValue from degrees to DMS
-        currentValue = degToDMS(parseFloat(currentValue));
+        currentValue = evaluate.degToDMS(parseFloat(currentValue));
         display.value = currentValue;
-      } 
-      
-      else if (value == "BackSpace") {
+      } else if (value == "BackSpace") {
         currentValue = currentValue.slice(0, -1);
         display.value = currentValue;
       } else if (value == "n!") {
+        keyHistory = currentValue + "!";
         currentValue = evaluate.factorial(parseInt(currentValue));
         display.value = currentValue;
-      } else if(value == "DELETE") {
-        
-      }
-       else if (value == "𝜫") {
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
+      } else if (value == "DELETE") {
+      } else if (value == "𝜫") {
         currentValue += Math.PI;
         display.value = currentValue;
       } else if (value == "exp") {
@@ -165,11 +178,19 @@ document.addEventListener("DOMContentLoaded", function () {
         currentValue += "%";
         display.value = currentValue;
       } else if (value == "| x |") {
+        keyHistory = "| " + currentValue + " |";
         currentValue = Math.abs(parseFloat(currentValue));
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
       } else if (value == "1/x") {
+        keyHistory = "1/" + currentValue;
         currentValue = Math.pow(parseFloat(currentValue), -1);
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
       } else if (value == "10^x") {
         currentValue = Math.pow(10, currentValue);
         display.value = currentValue;
@@ -219,45 +240,12 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "csc" ||
         value == "cot"
       ) {
-        // Convert the current value to radians if needed (only once)
-        if (redFlage) {
-          currentValue = currentValue * (Math.PI / 180);
-        }
-
-        switch (value) {
-          case "sin":
-            currentValue = Math.sin(currentValue);
-            break;
-          case "cos":
-            currentValue = Math.cos(currentValue);
-            break;
-          case "tan":
-            currentValue = Math.tan(currentValue);
-            break;
-          case "sec":
-            if (Math.cos(currentValue) !== 0) {
-              currentValue = 1 / Math.cos(currentValue);
-            } else {
-              currentValue = "Undefined"; // sec(x) is undefined where cos(x) = 0
-            }
-            break;
-          case "csc":
-            if (Math.sin(currentValue) !== 0) {
-              currentValue = 1 / Math.sin(currentValue);
-            } else {
-              currentValue = "Undefined"; // csc(x) is undefined where sin(x) = 0
-            }
-            break;
-          case "cot":
-            if (Math.tan(currentValue) !== 0) {
-              currentValue = 1 / Math.tan(currentValue);
-            } else {
-              currentValue = "Undefined"; // cot(x) is undefined where tan(x) = 0
-            }
-            break;
-        }
-
+        keyHistory = value + currentValue;
+        currentValue = evaluate.trigo(currentValue, redFlage, value);
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
       } else if (
         value == "asin" ||
         value == "acos" ||
@@ -266,12 +254,14 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "acsc" ||
         value == "acot"
       ) {
+        keyHistory = value + currentValue;
+    
         let inputVal = parseFloat(currentValue);
 
         switch (value) {
           case "asin":
             if (inputVal < -1 || inputVal > 1) {
-              currentValue = "Invalid Input"; // Out of domain
+              currentValue = "Invalid Input";
             } else {
               currentValue = Math.asin(inputVal);
             }
@@ -279,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           case "acos":
             if (inputVal < -1 || inputVal > 1) {
-              currentValue = "Invalid Input"; // Out of domain
+              currentValue = "Invalid Input";
             } else {
               currentValue = Math.acos(inputVal);
             }
@@ -291,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           case "asec":
             if (Math.abs(inputVal) < 1) {
-              currentValue = "Undefined"; // Out of domain
+              currentValue = "Undefined";
             } else {
               currentValue = Math.acos(1 / inputVal);
             }
@@ -299,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           case "acsc":
             if (Math.abs(inputVal) < 1) {
-              currentValue = "Undefined"; // Out of domain
+              currentValue = "Undefined";
             } else {
               currentValue = Math.asin(1 / inputVal);
             }
@@ -307,19 +297,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
           case "acot":
             if (inputVal === 0) {
-              currentValue = "Undefined"; // Out of domain
+              currentValue = "Undefined";
             } else {
               currentValue = Math.atan(1 / inputVal);
             }
             break;
         }
-
-        // Convert result to degrees if necessary
         if (redFlage) {
           currentValue = currentValue * (180 / Math.PI);
         }
-
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
       } else if (
         value == "sinh" ||
         value == "cosh" ||
@@ -328,7 +318,6 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "csch" ||
         value == "coth"
       ) {
-        // Hyperbolic Trigonometric Functions
         switch (value) {
           case "sinh":
             currentValue = Math.sinh(currentValue);
@@ -343,25 +332,24 @@ document.addEventListener("DOMContentLoaded", function () {
             if (Math.cosh(currentValue) !== 0) {
               currentValue = 1 / Math.cosh(currentValue);
             } else {
-              currentValue = "Undefined"; // sech(x) is undefined where cosh(x) = 0
+              currentValue = "Undefined";
             }
             break;
           case "csch":
             if (Math.sinh(currentValue) !== 0) {
               currentValue = 1 / Math.sinh(currentValue);
             } else {
-              currentValue = "Undefined"; // csch(x) is undefined where sinh(x) = 0
+              currentValue = "Undefined";
             }
             break;
           case "coth":
             if (Math.tanh(currentValue) !== 0) {
               currentValue = 1 / Math.tanh(currentValue);
             } else {
-              currentValue = "Undefined"; // coth(x) is undefined where tanh(x) = 0
+              currentValue = "Undefined";
             }
             break;
         }
-
         display.value = currentValue;
       } else if (
         value == "arsinh" ||
@@ -371,53 +359,46 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "arcsch" ||
         value == "arcoth"
       ) {
-        // Inverse Hyperbolic Trigonometric Functions
         switch (value) {
           case "arsinh":
             currentValue = Math.asinh(currentValue);
             break;
           case "arcosh":
-            // arcosh(x) is defined only for x >= 1
             if (currentValue >= 1) {
               currentValue = Math.acosh(currentValue);
             } else {
-              currentValue = "Undefined"; // arcosh(x) is undefined for x < 1
+              currentValue = "Undefined";
             }
             break;
           case "artanh":
-            // artanh(x) is defined only for -1 < x < 1
             if (currentValue > -1 && currentValue < 1) {
               currentValue = Math.atanh(currentValue);
             } else {
-              currentValue = "Undefined"; // artanh(x) is undefined for |x| >= 1
+              currentValue = "Undefined";
             }
             break;
           case "arsech":
-            // arsech(x) is defined for x >= 0 and x <= 1
             if (currentValue >= 0 && currentValue <= 1) {
               currentValue = Math.acosh(1 / currentValue);
             } else {
-              currentValue = "Undefined"; // arsech(x) is undefined for x < 0 or x > 1
+              currentValue = "Undefined";
             }
             break;
           case "arcsch":
-            // arcsch(x) is defined for all x != 0
             if (currentValue !== 0) {
               currentValue = Math.asinh(1 / currentValue);
             } else {
-              currentValue = "Undefined"; // arcsch(x) is undefined for x = 0
+              currentValue = "Undefined";
             }
             break;
           case "arcoth":
-            // arcoth(x) is defined for |x| > 1
             if (Math.abs(currentValue) > 1) {
               currentValue = Math.atanh(1 / currentValue);
             } else {
-              currentValue = "Undefined"; // arcoth(x) is undefined for |x| <= 1
+              currentValue = "Undefined";
             }
             break;
         }
-
         display.value = currentValue;
       } else if (
         value == "x^3" ||
@@ -429,38 +410,31 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         switch (value) {
           case "x^3":
-            currentValue = Math.pow(currentValue, 3); // x^3
+            currentValue = Math.pow(currentValue, 3);
             break;
-
           case "3√x":
-            currentValue = Math.cbrt(currentValue); // Cube root of x
+            currentValue = Math.cbrt(currentValue);
             break;
-
           case "y√x":
-                ythroot = 1;
-                currentValue = eval(currentValue)  + "√";
+            ythroot = 1;
+            currentValue = eval(currentValue) + "√";
             break;
-
           case "2^x":
-            currentValue = Math.pow(2, currentValue); // 2 raised to the power of x
+            currentValue = Math.pow(2, currentValue);
             break;
-
           case "logᵧ(x)":
             base = 1;
             currentValue = eval(currentValue) + "logBase";
             break;
-
           case "e^x":
-            currentValue = Math.pow(Math.E, currentValue); // e raised to the power of x
+            currentValue = Math.pow(Math.E, currentValue);
             break;
         }
-
         display.value = currentValue;
       } else if (currentValue == "Infinity") {
         currentValue = evaluate.canNotDivide(currentValue);
         display.value = currentValue;
       } else if (value == "F-E") {
-        // convert to float
         let num = parseFloat(currentValue);
         feFlag = 1;
 
@@ -478,135 +452,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-function changeTheme() {
-  let main = document.getElementById("main");
-  let themeClass;
-  if (main.classList.contains("theme_light")) {
-    main.classList.replace("theme_light", "theme_dark"); // Dark mode
-    themeClass = "theme_dark";
-  } else {
-    main.classList.replace("theme_dark", "theme_light"); // Light mode
-    themeClass = "theme_light";
-  }
-
-  try {
-    localStorage.setItem("theme", themeClass);
-    console.log("theme class is : ", localStorage.getItem("theme"));
-  } catch (err) {
-    console.error(`Error in storing theme: ${err}`);
-  }
-}
-
-
-// Convert degrees to DMS (Degrees, Minutes, Seconds)
-function degToDMS(deg) {
-    let d = Math.floor(deg);
-    let m = Math.floor((deg - d) * 60);
-    let s = ((deg - d - m / 60) * 3600).toFixed(2);
-    return `${d}° ${m}' ${s}"`;
-  }
-  
-  // Convert DMS (Degrees, Minutes, Seconds) to degrees
-  function DMSToDeg(dms) {
-    const regex = /^(\d+)° (\d+)' (\d+\.\d+)"$/;
-    const matches = dms.match(regex);
-    if (matches) {
-      let deg = parseInt(matches[1]);
-      let min = parseInt(matches[2]);
-      let sec = parseFloat(matches[3]);
-      return deg + (min / 60) + (sec / 3600);
-    }
-    return "Invalid Format";  // Handle invalid DMS format
-  }
-
-
-// class Calculate {
-//     constructor() {
-//         this.currentValue = '';
-//         this.display = document.getElementById("spanOutput");
-//     }
-
-//     // evaluate(currentValue) {
-//     //     try {
-//     //         currentValue = currentValue.replace("log", "Math.log");
-//     //         currentValue = currentValue.replace("π", Math.PI.toString());
-
-//     //         const result = eval(currentValue);
-//     //         if (isNaN(result) || result === undefined) {
-//     //             return "Error";
-//     //         }
-//     //         return result.toString();
-//     //     } catch (err) {
-//     //         console.error("Evaluation error: ", err);
-//     //         return "Error";
-//     //     }
-//     // }
-
-//     canNotDivide(currentValue) {
-//         let i = currentValue.includes('/0');
-//         if (i) {
-//             return 'Infinity';
-//         } else {
-//             return '';
-//         }
-//     }
-
-//     factorial(n) {
-//         if (n < 0) return "Error";
-//         let result = 1;
-//         for (let i = 1; i <= n; i++) {
-//             result *= i;
-//         }
-//         return result.toString();
-//     }
-
-//     sqrt(currentValue) {
-//         let num = parseFloat(currentValue);
-//         return num >= 0 ? Math.sqrt(num).toString() : "Invalid Input";
-//     }
-
-//     power(currentValue) {
-//         let values = currentValue.split("^");
-//         if (values.length === 2) {
-//             let base = parseFloat(values[0]);
-//             let exponent = parseFloat(values[1]);
-//             if (!isNaN(base) && !isNaN(exponent)) {
-//                 return Math.pow(base, exponent).toString();
-//             }
-//         }
-//         return "Invalid Format";
-//     }
-
-//     append(value) {
-//         if (value === "π") {
-//             this.currentValue += Math.PI.toString();
-//         } else if (this.display.value === "0" && value !== ".") {
-//             this.currentValue = value;
-//         } else {
-//             this.currentValue += value;
-//         }
-//         this.updateScreen();
-//     }
-
-//     updateScreen() {
-//         this.display.value = this.currentValue;
-//     }
-
-// }
-
-// Calculate.prototype.evaluate = function(currentValue) {
-//     try {
-//         currentValue = currentValue.replace("log", "Math.log");
-//         currentValue = currentValue.replace("π", Math.PI.toString());
-
-//         const result = eval(currentValue);
-//         if (isNaN(result) || result === undefined) {
-//             return "Error";
-//         }
-//         return result.toString();
-//     } catch (err) {
-//         console.error("Evaluation error: ", err);
-//         return "Error";
-//     }
-// }
