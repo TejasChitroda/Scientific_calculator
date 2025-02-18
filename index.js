@@ -1,4 +1,5 @@
 import Calculate from "./calculate.js";
+import historyPage , {getAllDataFromSessionStorage} from "./history.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   let main = document.getElementById("main");
@@ -7,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   main.className = theme ? theme : "theme_light";
 
   const evaluate = new Calculate();
+  historyPage;
 
   document.addEventListener("keydown", (event) => {
     const key = event.key;
@@ -53,6 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.getElementsByClassName("btn");
 
   let feFlag = 0;
+  let ythroot = 0;
+  let base = 0;
+  let keyHistory;
+  let valueHistory;
 
   let redian = document.getElementById("redian");
   let redFlage = 0;
@@ -90,6 +96,22 @@ document.addEventListener("DOMContentLoaded", function () {
           display.value = currentValue;
         }
       } else if (value == "=") {
+        keyHistory = currentValue;
+        if (ythroot){
+            ythroot = 0;
+            let exp = currentValue;
+            let splitExp = exp.split("√");
+            currentValue = Math.pow(splitExp[1] , 1/splitExp[0]);
+            display.value = currentValue;
+        }
+        if(base) {
+            base = 0;
+            ythroot = 0;
+            let exp = currentValue;
+            let splitExp = exp.split("logBase");
+            currentValue = Math.log(splitExp[0])/Math.log(splitExp[1]);
+            display.value = currentValue;
+        }
         if (currentValue.includes("^")) {
           currentValue = evaluate.power(currentValue); // Compute power
         } else {
@@ -100,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
           } // Normal evaluation
         }
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory , valueHistory);
+        getAllDataFromSessionStorage();
       } else if (value === "->dms") {
         // Convert currentValue from degrees to DMS
         currentValue = degToDMS(parseFloat(currentValue));
@@ -112,7 +137,10 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (value == "n!") {
         currentValue = evaluate.factorial(parseInt(currentValue));
         display.value = currentValue;
-      } else if (value == "𝜫") {
+      } else if(value == "DELETE") {
+        
+      }
+       else if (value == "𝜫") {
         currentValue += Math.PI;
         display.value = currentValue;
       } else if (value == "exp") {
@@ -409,19 +437,8 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
 
           case "y√x":
-            // Handling y-th root of x. Expect input as y√x (e.g., 2√8)
-            let values = currentValue.match(/^(\d+)√(\d+)$/); // Regex pattern to match "y√x" format
-            if (values && values.length === 3) {
-              let y = parseFloat(values[1]); // Base of the root (y)
-              let x = parseFloat(values[2]); // Value inside the root (x)
-              if (y > 0 && x >= 0) {
-                currentValue = Math.pow(x, 1 / y); // y-th root of x
-              } else {
-                currentValue = "Invalid Input"; // Handle invalid input
-              }
-            } else {
-              currentValue = "Invalid Format"; // Handle incorrect input format
-            }
+                ythroot = 1;
+                currentValue = eval(currentValue)  + "√";
             break;
 
           case "2^x":
@@ -429,19 +446,8 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
 
           case "logᵧ(x)":
-            // Expecting the input format like "log3(9)", where 3 is base and 9 is x
-            let logValues = currentValue.match(/^log(\d+)\((\d+)\)$/); // Regex pattern to match log3(9)
-            if (logValues && logValues.length === 3) {
-              let y = parseFloat(logValues[1]); // Base of the logarithm
-              let x = parseFloat(logValues[2]); // Number inside the logarithm
-              if (y > 0 && y !== 1 && x > 0) {
-                currentValue = Math.log(x) / Math.log(y); // log base y of x
-              } else {
-                currentValue = "Invalid Input"; // Handle invalid inputs
-              }
-            } else {
-              currentValue = "Invalid Format"; // Handle incorrect input format
-            }
+            base = 1;
+            currentValue = eval(currentValue) + "logBase";
             break;
 
           case "e^x":
