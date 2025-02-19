@@ -94,15 +94,16 @@ Calculate.prototype.trigo = function (currentValue, redFlag, value) {
       return Math.tan(currentValue);
 
     case "sec":
-      return Math.cos(currentValue) !== 0 ? 1 / Math.cos(currentValue) : NaN; // Return NaN if undefined
+      return Math.cos(currentValue) !== 0 ? 1 / Math.cos(currentValue) : "Infinity"; // Return NaN if undefined
 
     case "csc":
-      return Math.sin(currentValue) !== 0 ? 1 / Math.sin(currentValue) : NaN;
+      return Math.sin(currentValue) !== 0 ? 1 / Math.sin(currentValue) : "Infinity";
 
     case "cot":
-      return Math.tan(currentValue) !== 0 ? 1 / Math.tan(currentValue) : NaN;
+      return Math.tan(currentValue) !== 0 ? 1 / Math.tan(currentValue) : "Infinity";
 
     default:
       throw new Error("Invalid trigonometric function: " + value); // Handle invalid cases
   }
+  
 };

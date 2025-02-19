@@ -95,37 +95,46 @@ document.addEventListener("DOMContentLoaded", function () {
     const button = buttons[i];
     button.addEventListener("click", function () {
       const value = button.innerText.trim();
-      if (currentValue[0] == "0") {
-        currentValue = currentValue.replace(/^0+/, "");
-        display.value = currentValue;
-      }
-
       if (value == "CE") {
         currentValue = "";
         display.value = currentValue;
       } else if (value == ".") {
         if (currentValue.includes(".")) {
+          if(currentValue.includes("+") || currentValue.includes("-") || currentValue.includes("*") || currentValue.includes("/")) {
+            currentValue += value;
+          display.value = currentValue;
+          }
         } else {
           currentValue += value;
           display.value = currentValue;
         }
       } else if (value == "=") {
-        keyHistory = currentValue;
+        
         if (ythroot) {
+          keyHistory = currentValue;
           ythroot = 0;
           let exp = currentValue;
           let splitExp = exp.split("√");
           currentValue = Math.pow(splitExp[1], 1 / splitExp[0]);
           display.value = currentValue;
+          valueHistory = currentValue;
+          sessionStorage.setItem(keyHistory, valueHistory);
+          getAllDataFromSessionStorage();
         }
         if (base) {
+          keyHistory = currentValue;
           base = 0;
           ythroot = 0;
           let exp = currentValue;
           let splitExp = exp.split("logBase");
           currentValue = Math.log(splitExp[0]) / Math.log(splitExp[1]);
           display.value = currentValue;
+          valueHistory = currentValue;
+          sessionStorage.setItem(keyHistory, valueHistory);
+          getAllDataFromSessionStorage();
+
         }
+        keyHistory = currentValue;
         if (currentValue.includes("^")) {
           currentValue = evaluate.power(currentValue);
         } else {
@@ -140,8 +149,13 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem(keyHistory, valueHistory);
         getAllDataFromSessionStorage();
       } else if (value === "->dms") {
+        keyHistory = value + " "+ currentValue;
         currentValue = evaluate.degToDMS(parseFloat(currentValue));
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
+
       } else if (value == "BackSpace") {
         currentValue = currentValue.slice(0, -1);
         display.value = currentValue;
@@ -165,13 +179,8 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (value == "+/-") {
         currentValue = -parseFloat(currentValue);
         display.value = currentValue;
-      } else if (value == "x²") {
-        currentValue = Math.pow(parseFloat(currentValue), 2);
-        display.value = currentValue;
-      } else if (value == "2√x") {
-        currentValue = evaluate.sqrt(currentValue);
-        display.value = currentValue;
-      } else if (value == "xʸ") {
+       } 
+         else if (value == "xʸ") {
         currentValue += "^";
         display.value = currentValue;
       } else if (value == "mod") {
@@ -194,12 +203,6 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (value == "10^x") {
         currentValue = Math.pow(10, currentValue);
         display.value = currentValue;
-      } else if (value == "log") {
-        currentValue = Math.log10(parseFloat(currentValue));
-        display.value = currentValue;
-      } else if (value == "ln") {
-        currentValue = Math.log(parseFloat(currentValue));
-        display.value = currentValue;
       } else if (value == "2nd") {
         currentValue = currentValue;
       } else if (value == "Trigonometry") {
@@ -212,26 +215,40 @@ document.addEventListener("DOMContentLoaded", function () {
         display.value = currentValue;
       } else if (value == "Function") {
         currentValue = currentValue;
-      } else if (
+      }   
+      else if (
         value == "| x |" ||
         value == "⌈x⌉" ||
         value == "⌊x⌋" ||
         value == "rand"
       ) {
-        if (value == "| x |") {
-          currentValue = Math.abs(currentValue);
-          display.value = currentValue;
-        } else if (value == "⌈x⌉") {
-          currentValue = Math.ceil(currentValue);
-          display.value = currentValue;
-        } else if (value == "⌊x⌋") {
-          currentValue = Math.floor(currentValue);
-          display.value = currentValue;
-        } else if (value == "rand") {
-          currentValue = Math.random();
-          display.value = currentValue;
+        
+        switch (value) {
+          case "| x |":
+            keyHistory = value + " " + currentValue;
+            currentValue = Math.abs(currentValue);  // Absolute value
+            break;
+          case "⌈x⌉":
+            keyHistory = "⌈ "  + currentValue + " ⌉";
+            currentValue = Math.ceil(currentValue);  // Ceiling value
+            break;
+          case "⌊x⌋":
+            keyHistory = "⌊ "  + currentValue + " ⌋";
+            currentValue = Math.floor(currentValue);  // Floor value
+            break;
+          case "rand":
+            keyHistory = value + currentValue;
+            currentValue = Math.random();  // Random number between 0 and 1
+            break;
         }
-      } else if (value == "Red" || value == "Deg") {
+        display.value = currentValue;  // Update the display
+        valueHistory = currentValue;   // Store the result in valueHistory
+        sessionStorage.setItem(keyHistory, valueHistory);  // Store the result in sessionStorage
+        getAllDataFromSessionStorage();  // Fetch all session data
+      }
+      
+
+      else if (value == "Red" || value == "Deg") {
       } else if (
         value == "sin" ||
         value == "cos" ||
@@ -246,6 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
         valueHistory = currentValue;
         sessionStorage.setItem(keyHistory, valueHistory);
         getAllDataFromSessionStorage();
+        
       } else if (
         value == "asin" ||
         value == "acos" ||
@@ -318,6 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "csch" ||
         value == "coth"
       ) {
+
+        keyHistory = value + currentValue;
         switch (value) {
           case "sinh":
             currentValue = Math.sinh(currentValue);
@@ -351,6 +371,9 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         }
         display.value = currentValue;
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
       } else if (
         value == "arsinh" ||
         value == "arcosh" ||
@@ -359,6 +382,7 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "arcsch" ||
         value == "arcoth"
       ) {
+        keyHistory = value + currentValue;
         switch (value) {
           case "arsinh":
             currentValue = Math.asinh(currentValue);
@@ -400,7 +424,39 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         }
         display.value = currentValue;
-      } else if (
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
+      } 
+      else if (
+        value == "log" ||
+        value == "ln" ||
+        value == "x²" ||
+        value == "2√x"
+      ) {
+        keyHistory = value + " " + currentValue;
+        switch (value) {
+          case "log":
+            currentValue = Math.log10(parseFloat(currentValue)); 
+            break;
+          case "ln":
+            currentValue = Math.log(parseFloat(currentValue));  
+            break;
+          case "x²":
+            currentValue = Math.pow(parseFloat(currentValue), 2); 
+            break;
+          case "2√x":
+            currentValue = Math.sqrt(parseFloat(currentValue));  
+            break;
+        }
+        display.value = currentValue;  
+        valueHistory = currentValue;   
+        sessionStorage.setItem(keyHistory, valueHistory); 
+        getAllDataFromSessionStorage(); 
+      }
+      
+      
+      else if (
         value == "x^3" ||
         value == "3√x" ||
         value == "y√x" ||
@@ -408,6 +464,7 @@ document.addEventListener("DOMContentLoaded", function () {
         value == "logᵧ(x)" ||
         value == "e^x"
       ) {
+        keyHistory = value + " " + currentValue;
         switch (value) {
           case "x^3":
             currentValue = Math.pow(currentValue, 3);
@@ -431,7 +488,17 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         }
         display.value = currentValue;
-      } else if (currentValue == "Infinity") {
+        valueHistory = currentValue;
+        sessionStorage.setItem(keyHistory, valueHistory);
+        getAllDataFromSessionStorage();
+      }else if (currentValue[0] == "0" ) {
+        
+        currentValue = currentValue.replace(/^0+/, "");
+        
+        display.value = currentValue;
+      }
+ 
+      else if (currentValue == "Infinity") {
         currentValue = evaluate.canNotDivide(currentValue);
         display.value = currentValue;
       } else if (value == "F-E") {
@@ -452,3 +519,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+
+
+
